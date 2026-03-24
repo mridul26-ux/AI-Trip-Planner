@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Trip Planner</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+        <!-- Hero and Input Section -->
+        <header class="hero">
+            <h1>AI Trip Planner</h1>
+            <p>Your intelligent, personalized travel companion.</p>
+        </header>
+        
+        <main>
+            <section class="glass-form-container">
+                <form id="trip-form">
+                    <div class="input-group">
+                        <label for="city">Destination(s)</label>
+                        <input type="text" id="city" name="city" placeholder="e.g., Paris & Rome, or Tokyo" required>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="input-group">
+                            <label for="days">Duration (Days)</label>
+                            <input type="number" id="days" name="days" min="1" max="14" value="3" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="budget">Budget Level</label>
+                            <select id="budget" name="budget" required>
+                                <option value="Budget-Friendly">Budget-Friendly</option>
+                                <option value="Moderate" selected>Moderate</option>
+                                <option value="Luxury">Luxury</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="interests">Key Interests</label>
+                        <input type="text" id="interests" name="interests" placeholder="e.g., Culture, Tech, Spicy Food, Photography" required>
+                    </div>
+
+                    <button type="submit" id="generate-btn">
+                        <span class="btn-text">Generate Elegant Itinerary</span>
+                        <div class="loader" id="btn-loader" style="display: none;"></div>
+                    </button>
+                    <div id="error-message" class="error-text" style="display: none;"></div>
+                </form>
+            </section>
+
+            <!-- Results Section -->
+            <section id="results-section" style="display: none;">
+                <h2>Your Personalized Itinerary</h2>
+
+                <!-- Main City Overview Map -->
+                <iframe id="city-map" width="100%" height="400" style="border:0; border-radius: 1rem; margin-bottom: 2rem; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);" loading="lazy" src=""></iframe>
+
+                <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                    <div class="budget-card" style="flex: 1; margin-bottom: 2rem;">
+                        <span class="budget-icon">💵</span>
+                        <div>
+                            <div class="budget-title">Estimated Total Cost (INR)</div>
+                            <div class="budget-amount" id="budget-amount">₹0 - ₹0</div>
+                        </div>
+                    </div>
+
+                    <div class="budget-card" style="flex: 1; margin-bottom: 2rem; background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%); border-color: #7dd3fc; color: #0369a1;">
+                        <span class="budget-icon" id="weather-icon">☀️</span>
+                        <div>
+                            <div class="budget-title" style="color: #0284c7;">Current Weather</div>
+                            <div class="budget-amount" id="weather-text" style="color: #0c4a6e; font-size: 1.4rem; line-height: 1.3;">Loading...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline" id="timeline-container">
+                    <!-- Dynamic Timeline Cards will be injected here -->
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
