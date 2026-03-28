@@ -34,10 +34,10 @@ class TripRequest(BaseModel):
 
 @app.post("/generate-itinerary")
 def build_itinerary(req: TripRequest):
-    from services import generate_itinerary_with_llm
-    from fastapi import HTTPException
-    import traceback
     try:
+        from backend.services import generate_itinerary_with_llm
+        from fastapi import HTTPException
+        import traceback
         itinerary, weather_data, dest_image = generate_itinerary_with_llm(
             city=req.city, 
             days=req.days, 
@@ -58,11 +58,10 @@ class SwapRequest(BaseModel):
 
 @app.post("/swap-activity")
 def swap_activity(req: SwapRequest):
-    from services import generate_alternative_activity_with_llm
-    import traceback
-    from fastapi import HTTPException
-    
     try:
+        from backend.services import generate_alternative_activity_with_llm
+        import traceback
+        from fastapi import HTTPException
         new_act = generate_alternative_activity_with_llm(
             city=req.city,
             current_activity=req.current_activity,
