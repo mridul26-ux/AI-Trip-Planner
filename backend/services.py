@@ -187,9 +187,7 @@ def generate_itinerary_with_llm(city: str, days: int, budget: str, interests: st
             
         return itinerary_data, weather, destination_image
     except Exception as e:
-        content_log = response.choices[0].message.content if response and hasattr(response, 'choices') else "No response"
-        print(f"Failed LLM Call:\n{content_log}\nError: {e}")
-        raise ValueError(f"LLM generated invalid JSON or Engine Timeout. Error: {str(e)}")
+        raise ValueError(f"LLM generated invalid JSON or Engine Timeout. Error: {str(e)[:50]}")
 
 
 def generate_alternative_activity_with_llm(city: str, current_activity: dict, interests: str):
@@ -242,6 +240,4 @@ def generate_alternative_activity_with_llm(city: str, current_activity: dict, in
             
         return act
     except Exception as e:
-        content_log = response.choices[0].message.content if response and hasattr(response, 'choices') else "No response"
-        print(f"Failed alternative LLM Call:\n{content_log}\nError: {e}")
         raise ValueError(f"LLM generated invalid JSON during swap.")

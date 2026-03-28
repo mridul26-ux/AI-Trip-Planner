@@ -46,10 +46,8 @@ def build_itinerary(req: TripRequest):
         )
         return {"status": "success", "itinerary": itinerary, "weather": weather_data, "destination_image": dest_image}
     except Exception as e:
-        print("\n--- ERROR IN /generate-itinerary ---")
-        traceback.print_exc()
-        print("------------------------------------\n")
-        raise HTTPException(status_code=500, detail=str(e))
+        error_msg = str(e).encode('ascii', 'ignore').decode('ascii')
+        raise HTTPException(status_code=500, detail=error_msg)
 
 class SwapRequest(BaseModel):
     city: str
@@ -70,10 +68,8 @@ def swap_activity(req: SwapRequest):
         )
         return {"status": "success", "activity": new_act}
     except Exception as e:
-        print("\n--- ERROR IN /swap-activity ---")
-        traceback.print_exc()
-        print("------------------------------------\n")
-        raise HTTPException(status_code=500, detail=str(e))
+        error_msg = str(e).encode('ascii', 'ignore').decode('ascii')
+        raise HTTPException(status_code=500, detail=error_msg)
 
 # Mount the frontend directory so FastAPI serves the complete HTML web app on the same link!
 frontend_dir = os.path.join(os.path.dirname(__file__), '..', 'frontend')
