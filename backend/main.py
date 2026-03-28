@@ -44,10 +44,12 @@ def build_itinerary(req: TripRequest):
             budget=req.budget, 
             interests=req.interests
         )
-        return {"status": "success", "itinerary": itinerary, "weather": weather_data, "destination_image": dest_image}
+        from fastapi.responses import JSONResponse
+        return JSONResponse(content={"status": "success", "itinerary": itinerary, "weather": weather_data, "destination_image": dest_image})
     except Exception as e:
+        from fastapi.responses import JSONResponse
         error_msg = str(e).encode('ascii', 'ignore').decode('ascii')
-        raise HTTPException(status_code=500, detail=error_msg)
+        return JSONResponse(status_code=500, content={"status": "error", "detail": error_msg})
 
 class SwapRequest(BaseModel):
     city: str
@@ -66,10 +68,12 @@ def swap_activity(req: SwapRequest):
             current_activity=req.current_activity,
             interests=req.interests
         )
-        return {"status": "success", "activity": new_act}
+        from fastapi.responses import JSONResponse
+        return JSONResponse(content={"status": "success", "activity": new_act})
     except Exception as e:
+        from fastapi.responses import JSONResponse
         error_msg = str(e).encode('ascii', 'ignore').decode('ascii')
-        raise HTTPException(status_code=500, detail=error_msg)
+        return JSONResponse(status_code=500, content={"status": "error", "detail": error_msg})
 
 # Mount the frontend directory so FastAPI serves the complete HTML web app on the same link!
 frontend_dir = os.path.join(os.path.dirname(__file__), '..', 'frontend')
