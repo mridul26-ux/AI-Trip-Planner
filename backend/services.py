@@ -141,20 +141,21 @@ def generate_itinerary_with_llm(city: str, days: int, budget: str, interests: st
     Do not output markdown blocks, backticks, or text before/after. Just the raw JSON object.
     """
 
-    response = client.chat.completions.create(
-        messages=[
-            {"role": "system", "content": "You are a specialized API that outputs raw JSON objects. Never output markdown format."},
-            {"role": "user", "content": prompt}
-        ],
-        model="llama-3.1-8b-instant",
-        temperature=0.7,
-        max_tokens=2500,
-    )
-    
-    import re
-    import concurrent.futures
-
+    response = None
     try:
+        response = client.chat.completions.create(
+            messages=[
+                {"role": "system", "content": "You are a specialized API that outputs raw JSON objects. Never output markdown format."},
+                {"role": "user", "content": prompt}
+            ],
+            model="llama-3.1-8b-instant",
+            temperature=0.7,
+            max_tokens=2500,
+        )
+        
+        import re
+        import concurrent.futures
+
         content = response.choices[0].message.content.strip()
         # Extract JSON object using regex
         match = re.search(r'\{.*\}', content, re.DOTALL)
@@ -186,8 +187,9 @@ def generate_itinerary_with_llm(city: str, days: int, budget: str, interests: st
             
         return itinerary_data, weather, destination_image
     except Exception as e:
-        print(f"Failed to parse LLM Response:\n{response.choices[0].message.content}\nError: {e}")
-        raise ValueError(f"LLM generated invalid JSON. Please try clicking Generate again.")
+        content_log = response.choices[0].message.content if response and hasattr(response, 'choices') else "No response"
+        print(f"Failed LLM Call:\n{content_log}\nError: {e}")
+        raise ValueError(f"LLM generated invalid JSON or Engine Timeout. Error: {str(e)}")
 
 
 def generate_alternative_activity_with_llm(city: str, current_activity: dict, interests: str):
@@ -240,5 +242,6 @@ def generate_alternative_activity_with_llm(city: str, current_activity: dict, in
             
         return act
     except Exception as e:
-        print(f"Failed to parse alternative LLM Response:\n{response.choices[0].message.content}\nError: {e}")
+        content_log = response.choices[0].message.content if response and hasattr(response, 'choices') else "No response"
+        print(f"Failed alternative LLM Call:\n{content_log}\nError: {e}")
         raise ValueError(f"LLM generated invalid JSON during swap.")
