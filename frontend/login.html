@@ -62,24 +62,38 @@
     </div>
     
     <script>
-        document.getElementById('login-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            
-            // Mock authentication
-            const btnText = document.querySelector('#login-btn .btn-text');
-            const loader = document.getElementById('login-loader');
-            
-            btnText.style.display = 'none';
-            loader.style.display = 'block';
-            document.getElementById('login-btn').disabled = true;
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('login-form');
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    try {
+                        const email = document.getElementById('email').value;
+                        const password = document.getElementById('password').value;
+                        
+                        const btnText = document.querySelector('#login-btn .btn-text');
+                        const loader = document.getElementById('login-loader');
+                        
+                        if (btnText) btnText.style.display = 'none';
+                        if (loader) loader.style.display = 'block';
+                        document.getElementById('login-btn').disabled = true;
 
-            setTimeout(() => {
-                // Simulate successful login
-                localStorage.setItem('userAuth', JSON.stringify({ email: email, name: email.split('@')[0] }));
-                window.location.href = 'index.html';
-            }, 1000);
+                        setTimeout(() => {
+                            try {
+                                localStorage.setItem('userAuth', JSON.stringify({ email: email, name: email.split('@')[0] }));
+                            } catch (err) {
+                                console.error('LocalStorage error:', err);
+                            }
+                            // Redirect to home page
+                            window.location.href = 'index.html';
+                        }, 1000);
+                    } catch (err) {
+                        console.error('Login script error:', err);
+                        alert("An error occurred during login. Please try again.");
+                    }
+                });
+            }
         });
     </script>
 </body>

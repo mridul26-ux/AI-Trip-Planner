@@ -67,25 +67,39 @@
     </div>
     
     <script>
-        document.getElementById('signup-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            
-            // Mock authentication
-            const btnText = document.querySelector('#signup-btn .btn-text');
-            const loader = document.getElementById('signup-loader');
-            
-            btnText.style.display = 'none';
-            loader.style.display = 'block';
-            document.getElementById('signup-btn').disabled = true;
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('signup-form');
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    try {
+                        const name = document.getElementById('name').value;
+                        const email = document.getElementById('email').value;
+                        const password = document.getElementById('password').value;
+                        
+                        const btnText = document.querySelector('#signup-btn .btn-text');
+                        const loader = document.getElementById('signup-loader');
+                        
+                        if (btnText) btnText.style.display = 'none';
+                        if (loader) loader.style.display = 'block';
+                        document.getElementById('signup-btn').disabled = true;
 
-            setTimeout(() => {
-                // Simulate successful sign up and auto-login
-                localStorage.setItem('userAuth', JSON.stringify({ email: email, name: name }));
-                window.location.href = 'index.html';
-            }, 1000);
+                        setTimeout(() => {
+                            try {
+                                localStorage.setItem('userAuth', JSON.stringify({ email: email, name: name }));
+                            } catch (err) {
+                                console.error('LocalStorage error:', err);
+                            }
+                            // Redirect to home page
+                            window.location.href = 'index.html';
+                        }, 1000);
+                    } catch (err) {
+                        console.error('Signup script error:', err);
+                        alert("An error occurred during signup. Please try again.");
+                    }
+                });
+            }
         });
     </script>
 </body>

@@ -14,7 +14,17 @@ const timelineContainer = document.getElementById('timeline-container');
 
 // Auth State Management
 document.addEventListener('DOMContentLoaded', () => {
-    const userAuth = JSON.parse(localStorage.getItem('userAuth'));
+    let userAuth = null;
+    try {
+        const stored = localStorage.getItem('userAuth');
+        if (stored) {
+            userAuth = JSON.parse(stored);
+        }
+    } catch (e) {
+        console.error("Failed to parse userAuth", e);
+        localStorage.removeItem('userAuth');
+    }
+    
     const loginLink = document.getElementById('login-link');
     const signupLink = document.getElementById('signup-link');
     const profileDiv = document.getElementById('user-profile');
