@@ -3,9 +3,18 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 import os
+import sys
+
+# Ensure the backend directory is in the Python path to fix 'No module named services'
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 # Load environment variables
 load_dotenv()
+
+try:
+    from backend.services import generate_itinerary_with_llm, generate_alternative_activity_with_llm
+except ImportError:
+    from services import generate_itinerary_with_llm, generate_alternative_activity_with_llm
 
 app = FastAPI(title="AI Trip Planner API")
 
@@ -35,7 +44,6 @@ class TripRequest(BaseModel):
 @app.post("/generate-itinerary")
 def build_itinerary(req: TripRequest):
     try:
-        from services import generate_itinerary_with_llm
         from fastapi import HTTPException
         import traceback
         itinerary, weather_data, dest_image = generate_itinerary_with_llm(
@@ -59,7 +67,6 @@ class SwapRequest(BaseModel):
 @app.post("/swap-activity")
 def swap_activity(req: SwapRequest):
     try:
-        from services import generate_alternative_activity_with_llm
         import traceback
         from fastapi import HTTPException
         new_act = generate_alternative_activity_with_llm(
