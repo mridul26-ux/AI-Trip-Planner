@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - AI Trip Planner</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .auth-container {
+            max-width: 450px;
+            margin: 0 auto;
+            margin-top: 5rem;
+        }
+        .auth-links {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.95rem;
+        }
+        .auth-links a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .auth-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <header class="hero" style="margin-bottom: 2rem;">
+            <h1>Welcome Back</h1>
+            <p>Sign in to continue planning your next adventure.</p>
+        </header>
+
+        <main class="auth-container">
+            <section class="glass-form-container">
+                <form id="login-form">
+                    <div class="input-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" placeholder="you@example.com" required>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" placeholder="••••••••" required>
+                    </div>
+
+                    <button type="submit" id="login-btn">
+                        <span class="btn-text">Sign In</span>
+                        <div class="loader" id="login-loader" style="display: none;"></div>
+                    </button>
+                    <div id="login-error" class="error-text" style="display: none;"></div>
+                </form>
+
+                <div class="auth-links">
+                    Don't have an account? <a href="signup.html">Sign Up</a>
+                </div>
+            </section>
+        </main>
+    </div>
+    
+    <script>
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            // Mock authentication
+            const btnText = document.querySelector('#login-btn .btn-text');
+            const loader = document.getElementById('login-loader');
+            
+            btnText.style.display = 'none';
+            loader.style.display = 'block';
+            document.getElementById('login-btn').disabled = true;
+
+            setTimeout(() => {
+                // Simulate successful login
+                localStorage.setItem('userAuth', JSON.stringify({ email: email, name: email.split('@')[0] }));
+                window.location.href = 'index.html';
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

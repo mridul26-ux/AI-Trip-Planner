@@ -5,10 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Trip Planner</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preload" as="image" href="https://images.unsplash.com/photo-1488646953014-85cb44e25828?q=60&w=1200&auto=format&fit=crop">
 </head>
 <body>
     <div id="app">
+        <!-- Navigation -->
+        <nav style="display: flex; justify-content: flex-end; align-items: center; gap: 1rem; margin-bottom: 1rem;" id="auth-nav">
+            <a href="login.html" class="map-btn" id="login-link" style="margin: 0; text-decoration: none;">Login</a>
+            <a href="signup.html" class="map-btn" id="signup-link" style="background: var(--primary-color); color: white; margin: 0; border: none; text-decoration: none;">Sign Up</a>
+            <div id="user-profile" style="display: none; align-items: center; gap: 1rem; font-weight: 600;">
+                <span id="welcome-msg" style="color: var(--primary-color);"></span>
+                <button id="logout-btn" class="map-btn" style="margin: 0; padding: 0.4rem 0.8rem; border-color: #ef4444; color: #ef4444; background: rgba(239, 68, 68, 0.1);">Logout</button>
+            </div>
+        </nav>
+
         <!-- Hero and Input Section -->
         <header class="hero">
             <h1>AI Trip Planner</h1>
@@ -82,6 +95,6 @@
             </section>
         </main>
     </div>
-    <script src="script.js"></script>
+    <script src="script.js" defer></script>
 </body>
 </html>

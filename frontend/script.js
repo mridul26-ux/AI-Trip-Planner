@@ -1,5 +1,6 @@
 // Automatically point to the live server URL, falling back to localhost during local dev
-const BACKEND_URL = window.location.origin.includes("127.0.0.1:5500") || window.location.protocol === "file:" 
+const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+const BACKEND_URL = isLocalhost || window.location.protocol === "file:" 
     ? "http://127.0.0.1:8000" 
     : window.location.origin;
 
@@ -10,6 +11,25 @@ const loader = document.getElementById('btn-loader');
 const errorMsg = document.getElementById('error-message');
 const resultsSection = document.getElementById('results-section');
 const timelineContainer = document.getElementById('timeline-container');
+
+// Auth State Management
+document.addEventListener('DOMContentLoaded', () => {
+    const userAuth = JSON.parse(localStorage.getItem('userAuth'));
+    const loginLink = document.getElementById('login-link');
+    const signupLink = document.getElementById('signup-link');
+    const profileDiv = document.getElementById('user-profile');
+    
+    if (userAuth && loginLink && signupLink && profileDiv) {
+        loginLink.style.display = 'none';
+        signupLink.style.display = 'none';
+        profileDiv.style.display = 'flex';
+        document.getElementById('welcome-msg').textContent = `Hi, ${userAuth.name}!`;
+        document.getElementById('logout-btn').addEventListener('click', () => {
+            localStorage.removeItem('userAuth');
+            window.location.reload();
+        });
+    }
+});
 
 form.addEventListener('submit', async (e) => {
     e.preventDefault();

@@ -22,7 +22,7 @@ body {
     min-height: 100vh;
     background-image: 
         linear-gradient(rgba(255, 252, 240, 0.1), rgba(255, 252, 240, 0.15)),
-        url('https://images.unsplash.com/photo-1488646953014-85cb44e25828?q=80&w=2000&auto=format&fit=crop');
+        url('https://images.unsplash.com/photo-1488646953014-85cb44e25828?q=60&w=1200&auto=format&fit=crop');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
