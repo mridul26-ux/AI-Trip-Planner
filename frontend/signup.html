@@ -36,7 +36,7 @@
 
         <main class="auth-container">
             <section class="glass-form-container">
-                <form id="signup-form">
+                <form id="signup-form" onsubmit="return handleSignup(event)">
                     <div class="input-group">
                         <label for="name">Full Name</label>
                         <input type="text" id="name" name="name" placeholder="John Doe" required>
@@ -49,55 +49,63 @@
                     
                     <div class="input-group">
                         <label for="password">Password</label>
-                        <input type="password" id="password" name="password" placeholder="Create a strong password" required>
+                        <input type="password" id="password" name="password" placeholder="••••••••" required>
                     </div>
 
                     <button type="submit" id="signup-btn">
                         <span class="btn-text">Create Account</span>
                         <div class="loader" id="signup-loader" style="display: none;"></div>
                     </button>
-                    <div id="signup-error" class="error-text" style="display: none;"></div>
+                    <div id="signup-error" class="error-text" style="display: none; color: #ef4444; margin-top: 10px; text-align: center; font-size: 0.9rem;"></div>
                 </form>
 
                 <div class="auth-links">
-                    Already have an account? <a href="login.html">Sign In</a>
+                    Already have an account? <a href="login.html">Log In</a>
                 </div>
             </section>
         </main>
     </div>
     
     <script>
-        const form = document.getElementById('signup-form');
-        if (form) {
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
+        function handleSignup(e) {
+            e.preventDefault();
+            
+            try {
+                const name = document.getElementById('name').value;
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
                 
-                try {
-                    const name = document.getElementById('name').value;
-                    const email = document.getElementById('email').value;
-                    const password = document.getElementById('password').value;
-                    
-                    const btnText = document.querySelector('#signup-btn .btn-text');
-                    const loader = document.getElementById('signup-loader');
-                    
-                    if (btnText) btnText.style.display = 'none';
-                    if (loader) loader.style.display = 'block';
-                    document.getElementById('signup-btn').disabled = true;
+                const btnText = document.querySelector('#signup-btn .btn-text');
+                const loader = document.getElementById('signup-loader');
+                const errorDiv = document.getElementById('signup-error');
+                
+                if (errorDiv) errorDiv.style.display = 'none';
+                if (btnText) btnText.style.display = 'none';
+                if (loader) loader.style.display = 'block';
+                document.getElementById('signup-btn').disabled = true;
 
-                    setTimeout(() => {
-                        try {
-                            localStorage.setItem('userAuth', JSON.stringify({ email: email, name: name }));
-                        } catch (err) {
-                            console.error('LocalStorage error:', err);
+                setTimeout(() => {
+                    try {
+                        localStorage.setItem('userAuth', JSON.stringify({ email: email, name: name }));
+                    } catch (err) {
+                        console.error('LocalStorage error:', err);
+                        if (errorDiv) {
+                            errorDiv.textContent = "Error: Local Storage is blocked. Please enable cookies/storage to sign up.";
+                            errorDiv.style.display = 'block';
+                            if (btnText) btnText.style.display = 'inline';
+                            if (loader) loader.style.display = 'none';
+                            document.getElementById('signup-btn').disabled = false;
+                            return; // Stop redirect
                         }
-                        // Redirect to home page
-                        window.location.href = 'index.html';
-                    }, 1000);
-                } catch (err) {
-                    console.error('Signup script error:', err);
-                    alert("An error occurred during signup. Please try again.");
-                }
-            });
+                    }
+                    // Redirect to home page
+                    window.location.href = 'index.html';
+                }, 1000);
+            } catch (err) {
+                console.error('Signup script error:', err);
+                alert("An error occurred during signup. Please try again.");
+            }
+            return false;
         }
     </script>
 </body>

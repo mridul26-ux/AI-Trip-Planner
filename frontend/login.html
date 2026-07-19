@@ -36,7 +36,7 @@
 
         <main class="auth-container">
             <section class="glass-form-container">
-                <form id="login-form">
+                <form id="login-form" onsubmit="return handleLogin(event)">
                     <div class="input-group">
                         <label for="email">Email Address</label>
                         <input type="email" id="email" name="email" placeholder="you@example.com" required>
@@ -51,7 +51,7 @@
                         <span class="btn-text">Sign In</span>
                         <div class="loader" id="login-loader" style="display: none;"></div>
                     </button>
-                    <div id="login-error" class="error-text" style="display: none;"></div>
+                    <div id="login-error" class="error-text" style="display: none; color: #ef4444; margin-top: 10px; text-align: center; font-size: 0.9rem;"></div>
                 </form>
 
                 <div class="auth-links">
@@ -62,36 +62,44 @@
     </div>
     
     <script>
-        const form = document.getElementById('login-form');
-        if (form) {
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
+        function handleLogin(e) {
+            e.preventDefault();
+            
+            try {
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
                 
-                try {
-                    const email = document.getElementById('email').value;
-                    const password = document.getElementById('password').value;
-                    
-                    const btnText = document.querySelector('#login-btn .btn-text');
-                    const loader = document.getElementById('login-loader');
-                    
-                    if (btnText) btnText.style.display = 'none';
-                    if (loader) loader.style.display = 'block';
-                    document.getElementById('login-btn').disabled = true;
+                const btnText = document.querySelector('#login-btn .btn-text');
+                const loader = document.getElementById('login-loader');
+                const errorDiv = document.getElementById('login-error');
+                
+                if (errorDiv) errorDiv.style.display = 'none';
+                if (btnText) btnText.style.display = 'none';
+                if (loader) loader.style.display = 'block';
+                document.getElementById('login-btn').disabled = true;
 
-                    setTimeout(() => {
-                        try {
-                            localStorage.setItem('userAuth', JSON.stringify({ email: email, name: email.split('@')[0] }));
-                        } catch (err) {
-                            console.error('LocalStorage error:', err);
+                setTimeout(() => {
+                    try {
+                        localStorage.setItem('userAuth', JSON.stringify({ email: email, name: email.split('@')[0] }));
+                    } catch (err) {
+                        console.error('LocalStorage error:', err);
+                        if (errorDiv) {
+                            errorDiv.textContent = "Error: Local Storage is blocked. Please enable cookies/storage to log in.";
+                            errorDiv.style.display = 'block';
+                            if (btnText) btnText.style.display = 'inline';
+                            if (loader) loader.style.display = 'none';
+                            document.getElementById('login-btn').disabled = false;
+                            return; // Stop redirect
                         }
-                        // Redirect to home page
-                        window.location.href = 'index.html';
-                    }, 1000);
-                } catch (err) {
-                    console.error('Login script error:', err);
-                    alert("An error occurred during login. Please try again.");
-                }
-            });
+                    }
+                    // Redirect to home page
+                    window.location.href = 'index.html';
+                }, 1000);
+            } catch (err) {
+                console.error('Login script error:', err);
+                alert("An error occurred during login. Please try again.");
+            }
+            return false;
         }
     </script>
 </body>
